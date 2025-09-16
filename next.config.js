@@ -59,4 +59,8 @@ const nextConfig = {
         path: require.resolve('path-browserify'),
       };
     }
-    return
+    return config;
+  }
+};
+
+module.exports = nextConfig;
