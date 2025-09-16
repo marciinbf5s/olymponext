@@ -23,7 +23,20 @@ declare module 'locomotive-scroll' {
     class?: string;
     initPosition?: { x: number; y: number };
     reloadOnContextChange?: boolean;
-    // Adicione outras opções conforme necessário
+    firefoxMultiplier?: number;
+    touchMultiplier?: number;
+    multiplier?: number;
+    // Mobile options
+    mobile?: {
+      smooth?: boolean;
+      breakpoint?: number;
+      getDirection?: boolean;
+      getSpeed?: boolean;
+    };
+    // Other options
+    inertia?: number;
+    touchInertiaMultiplier?: number;
+    // Add other options as needed
   }
 
   export default class LocomotiveScroll {
