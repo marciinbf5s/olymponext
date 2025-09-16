@@ -43,19 +43,9 @@ const nextConfig = {
       }
     ];
   },
-  // Adiciona o nonce ao documento
   generateBuildId() {
     return process.env.BUILD_ID || randomBytes(16).toString('hex');
   },
-  // Adiciona o nonce ao documento HTML
-  generateStaticParams() {
-    return {
-      props: {
-        cspNonce: generateCsp().nonce,
-      },
-    };
-  },
-  // Configura o middleware para injetar o nonce
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -69,8 +59,4 @@ const nextConfig = {
         path: require.resolve('path-browserify'),
       };
     }
-    return config;
-  },
-};
-
-module.exports = nextConfig;
+    return
