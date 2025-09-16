@@ -1,5 +1,4 @@
-import { randomBytes } from 'crypto';
-import type { NextConfig } from "next";
+const { randomBytes } = require('crypto');
 
 const generateCsp = () => {
   const isDev = process.env.NODE_ENV === 'development';
@@ -27,7 +26,8 @@ const generateCsp = () => {
   };
 };
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   async headers() {
     const { csp } = generateCsp();
     
@@ -44,11 +44,11 @@ const nextConfig: NextConfig = {
     ];
   },
   // Adiciona o nonce ao documento
-  async generateBuildId() {
+  generateBuildId() {
     return process.env.BUILD_ID || randomBytes(16).toString('hex');
   },
   // Adiciona o nonce ao documento HTML
-  async generateStaticParams() {
+  generateStaticParams() {
     return {
       props: {
         cspNonce: generateCsp().nonce,
@@ -73,4 +73,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
