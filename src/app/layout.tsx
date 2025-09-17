@@ -10,8 +10,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Olympo - Soluções em Tecnologia',
   description: 'Soluções tecnológicas inovadoras para o seu negócio',
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#000000',
 };
 
 export default function RootLayout({
