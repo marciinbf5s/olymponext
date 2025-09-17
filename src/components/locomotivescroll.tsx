@@ -1,14 +1,20 @@
-// components/LocomotiveScrollWrapper.tsx
 'use client';
 
-import React, { useEffect, useRef, PropsWithChildren, useCallback } from 'react';
-import LocomotiveScroll from 'locomotive-scroll';
+import React, { useEffect, useRef, PropsWithChildren, useCallback, useState } from 'react';
+import dynamic from 'next/dynamic';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
+
+// Dynamically import LocomotiveScroll to avoid SSR issues
+const LocomotiveScroll = dynamic(
+  () => import('locomotive-scroll').then((mod) => mod.default),
+  { ssr: false }
+);
 
 const LocomotiveScrollWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const scrollInstance = useRef<LocomotiveScroll | null>(null);
+  const scrollInstance = useRef<any>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Update scroll on window resize
   const updateScroll = useCallback(() => {
@@ -35,8 +41,15 @@ const LocomotiveScrollWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
+  // Set mounted state to true when component mounts
   useEffect(() => {
-    if (!scrollRef.current) return;
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  // Initialize Locomotive Scroll
+  useEffect(() => {
+    if (!isMounted || !scrollRef.current) return;
 
     // Initialize Locomotive Scroll
     scrollInstance.current = new LocomotiveScroll({
@@ -136,6 +149,11 @@ const LocomotiveScrollWrapper: React.FC<PropsWithChildren> = ({ children }) => {
       }
     };
   }, [handleImageLoad, updateScroll]);
+
+  // Don't render the scroll container during SSR
+  if (!isMounted) {
+    return <div>{children}</div>;
+  }
 
   return (
     <div
