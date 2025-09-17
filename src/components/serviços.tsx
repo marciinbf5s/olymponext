@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import PlayButton from "./button";
+import { PlayButton } from "./button";
 
 // Tipos para os blocos de serviço
 interface ServiceItem {
